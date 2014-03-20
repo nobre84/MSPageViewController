@@ -83,6 +83,7 @@
         CGFloat xPos = (viewSize.width - defaultWidth) / 2;
         CGFloat yPos = viewSize.height - defaultHeight ;
         _transparentPageControl = [[UIPageControl alloc]initWithFrame:CGRectIntegral(CGRectMake(xPos, yPos, defaultWidth, defaultHeight))];
+        _transparentPageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         _transparentPageControl.numberOfPages = pageCount;
         
         [_transparentPageControl addTarget:self action:@selector(pageChanged:) forControlEvents:UIControlEventValueChanged];
