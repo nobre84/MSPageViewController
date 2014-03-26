@@ -16,6 +16,8 @@
  */
 @interface MSPageViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
+@property (nonatomic, strong) UIPageControl *pageControl;
+
 /**
  * @note If not overridden, will try to build the array from the comma-separated runtime attribute `self.ms_pages`
  * @discussion The pages for this page view controller

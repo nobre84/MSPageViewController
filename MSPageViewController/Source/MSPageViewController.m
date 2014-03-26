@@ -9,9 +9,7 @@
 #import "MSPageViewController.h"
 #import "MSPageViewController+Protected.h"
 
-@implementation MSPageViewController {
-    UIPageControl *_transparentPageControl;
-}
+@implementation MSPageViewController
 
 - (id)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style
         navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation
@@ -41,8 +39,8 @@
 
 - (NSArray *)pageIdentifiers {
     //try to build from runtime attribute string
-    if (self.ms_pages) {
-        return [self.ms_pages componentsSeparatedByString:@","];
+    if (self.pages) {
+        return [self.pages componentsSeparatedByString:@","];
     }
     [self doesNotRecognizeSelector:_cmd];
     
@@ -74,7 +72,7 @@
     if (pageCount == 1) {
         self.view.userInteractionEnabled = NO;
     }
-    if (self.ms_transparentControl && pageCount > 1) {
+    if (pageCount > 1) {
         CGSize viewSize = self.view.frame.size;
         CGSize preferredSize = [[UIPageControl new] sizeForNumberOfPages:pageCount];
         CGFloat defaultWidth = preferredSize.width;
@@ -82,13 +80,13 @@
         CGFloat defaultHeight = preferredSize.height;
         CGFloat xPos = (viewSize.width - defaultWidth) / 2;
         CGFloat yPos = viewSize.height - defaultHeight ;
-        _transparentPageControl = [[UIPageControl alloc]initWithFrame:CGRectIntegral(CGRectMake(xPos, yPos, defaultWidth, defaultHeight))];
-        _transparentPageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _transparentPageControl.numberOfPages = pageCount;
+        _pageControl = [[UIPageControl alloc]initWithFrame:CGRectIntegral(CGRectMake(xPos, yPos, defaultWidth, defaultHeight))];
+        _pageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _pageControl.numberOfPages = pageCount;
         
-        [_transparentPageControl addTarget:self action:@selector(pageChanged:) forControlEvents:UIControlEventValueChanged];
+        [_pageControl addTarget:self action:@selector(pageChanged:) forControlEvents:UIControlEventValueChanged];
 
-        [self.view addSubview:_transparentPageControl];
+        [self.view addSubview:_pageControl];
     }
 }
 
@@ -133,8 +131,7 @@
 }
 
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
-    NSInteger pageCount = self.pageCount;
-    return !self.ms_transparentControl && pageCount > 1 ? pageCount : 0;
+    return 0;
 }
 
 - (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
@@ -146,8 +143,7 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
     if (completed) {
         UIViewController <MSPageViewControllerChild> *currentVC = pageViewController.viewControllers[0];
-        NSLog(@"Current: %@, index: %i", currentVC, currentVC.pageIndex);
-        _transparentPageControl.currentPage = currentVC.pageIndex;
+        _pageControl.currentPage = currentVC.pageIndex;
     }
 }
 
