@@ -35,6 +35,7 @@
 
 - (void)ms_setUp {
     self.dataSource = self;
+    _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0.0f, 0.0f, 50.0f, 37.0f)];
 }
 
 - (NSArray *)pageIdentifiers {
@@ -74,13 +75,13 @@
     }
     if (pageCount > 1) {
         CGSize viewSize = self.view.frame.size;
-        CGSize preferredSize = [[UIPageControl new] sizeForNumberOfPages:pageCount];
+        CGSize preferredSize = [_pageControl sizeForNumberOfPages:pageCount];
         CGFloat defaultWidth = preferredSize.width;
         // This should be 37.0f, but its best not to hard code it.
         CGFloat defaultHeight = preferredSize.height;
         CGFloat xPos = (viewSize.width - defaultWidth) / 2;
         CGFloat yPos = viewSize.height - defaultHeight ;
-        _pageControl = [[UIPageControl alloc]initWithFrame:CGRectIntegral(CGRectMake(xPos, yPos, defaultWidth, defaultHeight))];
+        _pageControl.frame = CGRectIntegral(CGRectMake(xPos, yPos, defaultWidth, defaultHeight));
         _pageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _pageControl.numberOfPages = pageCount;
         
